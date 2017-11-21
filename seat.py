@@ -21,7 +21,13 @@ class Seat():
         return self._perks
     
     def isTaken(self):
-        return self._taken    
+        return self._taken
+    
+    def setPrice(self, p):
+        self._price = p
+    def setTaken(self):
+        self._taken = True
+        
     
 
         
@@ -55,7 +61,8 @@ class Regular(Seat):
         
 
     def __repr__(self):
-        if not self.isTaken() : return "$"+str(self._price)
+        if not self.isTaken() : 
+            return "$"+str(self._price)
         else : return "X" 
             
 

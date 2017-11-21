@@ -3,7 +3,7 @@ from seat import *
 class Chart():
     
     def __init__(self):
-        self._seatingChart = [ ]               # initate the List (of lists)
+        self._chart = [ ]               # initate the List (of lists)
         keepReading = True                     
         while(keepReading):
             try:
@@ -23,7 +23,7 @@ class Chart():
                             if price == premiumPrice : rowList.append(Premium(price))   
                             elif price == choicePrice : rowList.append(Choice(price))
                             else : rowList.append(Choice(price))
-                        self._seatingChart.append(rowList)    # apend the list of object into seatingChart
+                        self._chart.append(rowList)    # apend the list of object into seatingChart
                         
                         #print(rowList, end = " ")
                         #print()                           
@@ -37,8 +37,8 @@ class Chart():
                 keepReading  = True
             
     def print(self):
-        numRow = len(self._seatingChart)
-        numCol = len(self._seatingChart[0])
+        numRow = len(self._chart)
+        numCol = len(self._chart[0])
         
         print("Price Chart".center((numCol+1)*5))
         print("Column".center((numCol+1)*5))             # print 'Column'   
@@ -52,11 +52,54 @@ class Chart():
         for row in range(numRow):
             print(str(row+1) + "  | ", end = "")
             for col in range(numCol):
-                print("%5s"  %(self._seatingChart[row][col]), end = "")
+                print("%5s"  %(self._chart[row][col]), end = "")
             print()
                 
-
+    def buySeat(self):
+        takenSeat = [ ]
+        seatCount = 0
+        totalPrice = 0
+        
+        print("Available seats are shown with price")
+        keepPrompting = True
+        while keepPrompting:
+            seat = input("Enter row,col for seat %d or enter 0 to end: " %(seatCount+1))
+            if(seat == "0"): keepPrompting = False
+            else:
+                try:
+                    #print("abc")
+                    seat = seat.split(",")
+                    row = int(seat[0]) - 1
+                    col = int(seat[1]) - 1
+                    if self._chart[row][col].isTaken():
+                        print("Sorry, that seat is not available.")
+                    else:
+                        takenSeat.append((row+1, col+1))
+                        seatCount += 1;
+                        totalPrice += self._chart[row][col].getPrice()
+                        self._chart[row][col].setTaken()
+                #print(totalPrice)
+                except ValueError:
+                    print("Row and column must be numbers")
+                except IndexError:
+                    print("Invalid row or column")  
+                    
+        # print price
+        print("Your total: $%d" %totalPrice)
+        # print location  
+        print("Your %d seat(s) at " %(seatCount), end = "")
+        for seat in takenSeat:
+            print(seat, end = " ")
+        print("are marked with 'X'")
+        #print updated chart
+        self.print()
+        
+        
+        
+        
 
 
 #### Testing Area ####
 chartTest = Chart()
+chartTest.buySeat()
+
