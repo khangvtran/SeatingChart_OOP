@@ -71,6 +71,9 @@ class Chart():
                     seat = seat.split(",")
                     row = int(seat[0]) - 1
                     col = int(seat[1]) - 1
+                    
+                    if row < 0 or col < 0 : raise IndexError
+
                     if self._chart[row][col].isTaken():
                         print("Sorry, that seat is not available.")
                     else:
@@ -98,8 +101,9 @@ class Chart():
         
         
 
-
+"""
 #### Testing Area ####
 chartTest = Chart()
 chartTest.buySeat()
 
+"""
